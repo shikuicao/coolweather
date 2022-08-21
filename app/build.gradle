@@ -7,8 +7,8 @@ android {
 
     defaultConfig {
         applicationId "com.cao.coolweather"
-        minSdk 21
-        targetSdk 32
+        minSdk 15
+        targetSdk 24
         versionCode 1
         versionName "1.0"
 
