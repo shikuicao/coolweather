@@ -5,6 +5,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.cao.coolweather.gson.Forecast;
 import com.cao.coolweather.gson.Weather;
+import com.cao.coolweather.service.AutoUpdateService;
 import com.cao.coolweather.util.HttpUtil;
 import com.cao.coolweather.util.Utility;
 
@@ -105,6 +107,7 @@ public class WeatherActivity extends AppCompatActivity {
                 requestWeather(weatherId);
             }
         });
+
         String bingPic = prefs.getString("bing_ic", null);
         if(bingPic != null){
             Glide.with(this).load(bingPic).into(bingPicImg);
@@ -193,6 +196,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     /**
