@@ -5,10 +5,14 @@ import android.text.TextUtils;
 import com.cao.coolweather.db.City;
 import com.cao.coolweather.db.County;
 import com.cao.coolweather.db.Province;
+import com.cao.coolweather.gson.Weather;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 public class Utility {
     public static boolean handleProvinceResponse(String response){
@@ -16,7 +20,7 @@ public class Utility {
             try{
                 JSONArray allProvinces = new JSONArray(response);
                 for (int i = 0; i < allProvinces.length(); i++) {
-                    JSONObject provinceObject = allProvinces.getJSONObject(i);
+                    JSONObject provinceObject= allProvinces.getJSONObject(i);
                     Province province = new Province();
                     province.setProvinceName(provinceObject.getString("name"));
                     province.setProvinceCode(provinceObject.getInt("id"));
@@ -68,5 +72,30 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /**
+     * 将返回的JSON数据解析成Weather实体类
+     */
+    public static Weather handleWeatherResponse(String response){
+        try{
+            //System.out.println("response:"+response+"=====================================");
+
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            Weather weather = new Gson().fromJson(weatherContent, Weather.class);
+//            System.out.println(weather+"=====================================");
+//            System.out.println(weather.status);
+//            System.out.println(weather.basic);
+//            System.out.println(weather.aqi);
+//            System.out.println(weather.now);
+//            System.out.println(weather.suggestion);
+//            System.out.println(weather.forecastList);
+            return weather;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
